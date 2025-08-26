@@ -1,8 +1,9 @@
-# 📞 react-phone-input-prefixes
+📞 react-phone-input-prefixes
 ## 📸 Demo
 
-![Input Preview](./Iphone-input-prefixes-preview.png)
-![Selector Preview](./Iphone-input-prefixes-selector.png)
+![Input Preview](https://raw.githubusercontent.com/cesarnavarro1011/react-phone-input-prefixes/main/Iphone-input-prefixes-preview.png)
+![Selector Preview](https://raw.githubusercontent.com/cesarnavarro1011/react-phone-input-prefixes/main/Iphone-input-prefixes-selector.png)
+
 
 ## ✨ Features
 
@@ -57,19 +58,36 @@ const nextConfig = {
 export default nextConfig;
 ```
 
+```tailwind.config.js
+module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-phone-input-prefixes/**/*.{js,ts,jsx,tsx}", // 👈 importante
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+
+```
+
 ---
 
 ## 📦 Basic usage
 
 ```tsx
-import React from "react";
-import PhoneInputWithPrefixes from "react-phone-input-prefixes";
+"use client"
+import { PhoneInputPrefixes } from "react-phone-input-prefixes";
 
 export default function App() {
+  const [phone, setPhone] = useState("");
+
   return (
     <div className="p-4">
-      <PhoneInputWithPrefixes
-        value=""
+      <PhoneInputPrefixes
+        value={phone}
         onChange={(value, code) => console.log(value, code)}
         countryDefault="co"
       />
@@ -83,43 +101,67 @@ export default function App() {
 ## 🎨 Customization
 
 ```tsx
-<PhoneInputWithPrefixes
-  enableSearch
-  countryDefault="co"
-  countries={[
-    { iso: "co", code: "+57", name: "Colombia" },
-    { iso: "us", code: "+1", name: "Estados Unidos" },
-    { iso: "mx", code: "+52", name: "México" },
-    { iso: "pe", code: "+51", name: "Perú" }
-  ]}
-  placeholder="Ingresa tu número"
-  inputProps={{
-    name: 'phone',
-    required: true,
-    autoFocus: true
-  }}
-  inputStyle={{ width: '100%' }}
-  containerStyle={{ border: '1px solid #ccc', borderRadius: '6px' }}
-/>
+"use client"
+import { PhoneInputPrefixes } from "react-phone-input-prefixes";
+
+export default function Home() {
+  const [phone, setPhone] = useState("");
+  
+  return (
+    <div className="p-4">
+      <PhoneInputPrefixes
+        label="Teléfono"
+        value={phone}
+        onChange={(value, code) => {
+          console.log("Teléfono:", value, "Código:", code);
+          setPhone(value);
+        }}
+        enableSearch={true}
+        countryDefault="CO"
+        countries={[
+          { iso: "co", code: "+57", name: "Colombia" },
+          { iso: "us", code: "+1", name: "Estados Unidos" }
+        ]}
+        placeholder="Ingresa tu número"
+        inputProps={{
+          name: "phone",
+          required: true,
+          autoFocus: true
+        }}
+        inputStyle={{
+          padding: "8px",
+          border: "1px solid #ccc",
+          borderRadius: "4px"
+        }}
+        containerStyle={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px"
+        }}
+      />
+    </div>
+  );
+}
 ```
 
 ---
 
 ## 📦 Props
 
-| Prop             | Tipo                                              | Descripción                                                    |
-|------------------|---------------------------------------------------|----------------------------------------------------------------|
-| `value`          | `string`                                          | El número sin código de país.                                  |
-| `onChange`       | `(value: string, code: string) => void`           | Callback al cambiar el número o el país.                       |
-| `countries`      | `{ iso: string; code: string; name: string; }[]`  | Lista de países adicionales.                                   |
-| `onlyCountries`  | `string[]`                                        | Lista de códigos ISO que limita qué países mostrar.            |
-| `countryDefault` | `string`                                          | ISO del país seleccionado por defecto.                         |
-| `label`          | `string`                                          | Texto del label (por defecto: "Phone number").                 |
-| `placeholder`    | `string`                                          | Placeholder del input.                                         |
-| `inputStyle`     | `React.CSSProperties`                             | Estilos inline para el `<input />`.                            |
-| `containerStyle` | `React.CSSProperties`                             | Estilos inline para el contenedor completo del componente.     |
-| `enableSearch`   | `boolean`                                         | Si permite buscar en la lista de países.                       |
-| `inputProps`     | `React.InputHTMLAttributes<HTMLInputElement>`     | Props extra para el input.                                     |
+| Prop            | Tipo                                              | Descripción                                                    |
+|-----------------|---------------------------------------------------|----------------------------------------------------------------|
+| `value`         | `string`                                          | Valor del número de teléfono.                                  |
+| `onChange`      | `(value: string, countryCode: string) => void`    | Callback que retorna el número y el código de país.            |
+| `countries`     | `Country[]`                                       | Lista adicional de países soportados.                          |
+| `onlyCountries` | `string[]`                                        | ISO de países permitidos (ej: `["co","us"]`).                  |
+| `countryDefault`| `string`                                          | ISO del país por defecto.                                      |
+| `label`         | `string`                                          | Texto de la etiqueta del input.                                |
+| `placeholder`   | `string`                                          | Placeholder del input.                                         |
+| `inputStyle`    | `React.CSSProperties`                             | Estilos personalizados para el input.                          |
+| `containerStyle`| `React.CSSProperties`                             | Estilos personalizados para el contenedor general.             |
+| `enableSearch`  | `boolean`                                         | Habilita la búsqueda en el popover de países.                  |
+| `inputProps`    | `React.InputHTMLAttributes<HTMLInputElement>`     | Props adicionales que se pasan directamente al `<input>`.      |
+
 
 ---
 

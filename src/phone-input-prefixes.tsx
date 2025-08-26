@@ -32,7 +32,7 @@ const defaultCountries: Country[] = [
   { iso: "cl", code: "+56", name: "Chile" },
 ];
 
-export default function PhoneInputWithPrefixes({
+export default function PhoneInputPrefixes({
   value,
   onChange,
   countries = [],
@@ -86,41 +86,47 @@ export default function PhoneInputWithPrefixes({
   );
 
   return (
-    <div className="space-y-2" style={containerStyle}>
-      <label htmlFor="Phone" className="text-sm font-medium">
+    <div
+      className={`space-y-2 w-full max-w-sm`}
+      style={containerStyle}
+    >
+      <label htmlFor="Phone" className="block text-base font-medium text-gray-700">
         {label}
       </label>
 
-      <div className="flex border border-gray-300 rounded-md overflow-hidden bg-white focus-within:ring-1 focus-within:ring-blue-500">
+      <div className="flex items-center border border-gray-300 rounded-lg bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
+        {/* Selector de país */}
         <Popover.Root>
           <Popover.Trigger asChild>
             <button
               type="button"
-              className="w-[100px] flex items-center gap-2 px-2 hover:bg-gray-100"
+              className="flex items-center gap-2 p-2 hover:bg-gray-50 transition"
             >
               <img
                 src={`https://flagcdn.com/w40/${selectedCountry.iso}.png`}
                 alt={selectedCountry.name}
                 width={20}
-                height={15}
-                className="object-cover"
+                height={20}
+                className="rounded-xs"
               />
-              <span className="text-sm">{selectedCountry.code}</span>
+              <span className="text-base font-semibold">{selectedCountry.code}</span>
             </button>
           </Popover.Trigger>
 
           <Popover.Portal>
             <Popover.Content
-              className="bg-white border border-gray-200 rounded-md shadow-lg w-60"
-              sideOffset={4}
+              side="bottom"
+              align="start"
+              className="bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50 p-2"
+              sideOffset={6}
             >
               {enableSearch && (
-                <div className="p-2">
+                <div className="mb-2">
                   <input
                     placeholder="Buscar país"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               )}
@@ -131,14 +137,14 @@ export default function PhoneInputWithPrefixes({
                     <button
                       key={country.iso}
                       onClick={() => handleSelectCountry(country)}
-                      className="w-full flex items-center px-3 py-2 text-sm hover:bg-gray-100 gap-2"
+                      className="w-full flex items-center p-2 pr-5 text-sm hover:bg-gray-100 rounded-md transition gap-2"
                     >
                       <img
                         src={`https://flagcdn.com/w40/${country.iso}.png`}
                         alt={country.name}
-                        width={20}
-                        height={15}
-                        className="object-cover"
+                        width={22}
+                        height={22}
+                        className="rounded-xs"
                       />
                       <span>{country.name}</span>
                       <span className="ml-auto text-gray-500">{country.code}</span>
@@ -156,13 +162,14 @@ export default function PhoneInputWithPrefixes({
           </Popover.Portal>
         </Popover.Root>
 
+        {/* Input */}
         <input
           id="Phone"
           type="tel"
           placeholder={placeholder}
           value={phone}
           onChange={handlePhoneChange}
-          className="border-0 flex-1 px-2 py-1 text-sm focus:outline-none"
+          className="flex-1 px-3 py-2 text-base placeholder-gray-400 focus:outline-none"
           style={inputStyle}
           {...inputProps}
         />
